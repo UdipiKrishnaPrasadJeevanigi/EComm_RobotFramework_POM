@@ -30,7 +30,7 @@ pipeline {
 
                     mkdir -p results
 
-                    robot \
+                    /var/jenkins_home/.local/bin/robot \
                         --variable BROWSER:headlesschrome \
                         --outputdir results \
                         --output    output.xml \
