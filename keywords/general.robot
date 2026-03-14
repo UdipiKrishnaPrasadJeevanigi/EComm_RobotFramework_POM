@@ -45,12 +45,16 @@ ${PASSWORD_INVALID}     Password1
 *** Keywords ***
 Launch Browser
     [Documentation]    Launch browser with specified popup behavior
-    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
-    Call Method    ${chrome_options}    add_argument    --headless=new
-    Call Method    ${chrome_options}    add_argument    --no-sandbox
-    Call Method    ${chrome_options}    add_argument    --disable-dev-shm-usage
-    Call Method    ${chrome_options}    add_argument    --disable-gpu
-    Open Browser    ${PAGE_URL}    ${BROWSER}    options=${chrome_options}
+    ${chrome_options}=    Evaluate    selenium.webdriver.ChromeOptions()    modules=selenium.webdriver
+    ${headless}=          Set Variable    --headless=new
+    ${no_sandbox}=        Set Variable    --no-sandbox
+    ${shm}=               Set Variable    --disable-dev-shm-usage
+    ${gpu}=               Set Variable    --disable-gpu
+    Call Method    ${chrome_options}    add_argument    ${headless}
+    Call Method    ${chrome_options}    add_argument    ${no_sandbox}
+    Call Method    ${chrome_options}    add_argument    ${shm}
+    Call Method    ${chrome_options}    add_argument    ${gpu}
+    Open Browser    ${PAGE_URL}    chrome    options=${chrome_options}
 
 Read Excel Values
     [Documentation]    Keyword to fetch the values from the excel sheet
