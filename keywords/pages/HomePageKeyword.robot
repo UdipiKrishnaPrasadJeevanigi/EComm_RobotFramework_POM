@@ -1,5 +1,5 @@
 *** Settings ***
-Resource    keywords/pages/LoginPageKeyword.robot
+Resource    ../../keywords/pages/LoginPageKeyword.robot
 
 *** Variables ***
 ${SECTION_LINKS}    //a[@href = "#" and @class = "nav-link"]

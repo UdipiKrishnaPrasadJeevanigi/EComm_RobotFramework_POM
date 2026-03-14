@@ -2,6 +2,8 @@ pipeline {
     agent any
 
     environment {
+        HOME_URL    = "https://www.tecskool.com"   // or use credentials()
+        BROWSER     = "headlesschrome"
         PYTHONUNBUFFERED = '1'
         PATH = "/var/jenkins_home/.local/bin:${env.PATH}"
     }

@@ -1,5 +1,5 @@
 *** Settings ***
-Resource    keywords/pages/CheckoutPageKeyword.robot
+Resource    ../../keywords/pages/CheckoutPageKeyword.robot
 
 *** Variables ***
 
