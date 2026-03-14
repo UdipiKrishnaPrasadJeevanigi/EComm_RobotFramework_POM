@@ -1,0 +1,19 @@
+robotframework
+robotframework-seleniumlibrary
+
+# Selenium WebDriver
+selenium
+
+# WebDriver managers
+webdriver-manager
+
+# Browser drivers
+chromedriver-autoinstaller
+geckodriver-autoinstaller
+
+# Additional utilities
+robotframework-databaselibrary
+
+# Data-driven testing
+pandas
+openpyxl

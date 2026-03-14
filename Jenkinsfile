@@ -19,6 +19,7 @@ pipeline {
         stage('Run Robot Framework Tests') {
             steps {
                 sh '''
+                    mkdir -p results
                     robot --outputdir results tests/
                 '''
             }
