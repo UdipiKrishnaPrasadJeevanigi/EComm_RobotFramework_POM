@@ -1,14 +1,14 @@
 pipeline {
     agent any
 
-    environment {
-        HOME_URL    = "https://www.tecskool.com"   // or use credentials()
-        BROWSER     = "headlesschrome"
-        PYTHONUNBUFFERED = '1'
-        PATH = "/var/jenkins_home/.local/bin:${env.PATH}"
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timestamps()
     }
 
     stages {
+
         stage('Setup Environment') {
             steps {
                 sh '''
@@ -20,51 +20,47 @@ pipeline {
 
         stage('Run Robot Framework Tests') {
             steps {
-                sh """
-                    # Kill any stale Chrome from previous builds
-                    pkill -f chrome      || true
+                sh '''
+                    pkill -f chrome       || true
                     pkill -f chromedriver || true
-
-                    # Delete Chrome singleton lock files (root cause of the error)
                     find /tmp -name 'SingletonLock'   -delete 2>/dev/null || true
                     find /tmp -name 'SingletonSocket' -delete 2>/dev/null || true
-                    find /tmp -name 'SingletonCookie' -delete 2>/dev/null || true
-                    rm -rf /tmp/.com.google.Chrome.* || true
-                    rm -rf /tmp/chrome-* || true
+                    rm -rf /tmp/.com.google.Chrome.*  || true
+                    rm -rf /tmp/chrome-*              || true
 
-                    mkdir -p ${RESULTS_DIR}
+                    mkdir -p results
+
                     robot \
-                        --variable HOME_URL:${HOME_URL} \
-                        --variable BROWSER:${BROWSER} \
-                        --variable BUILD_NUMBER:${BUILD_NUMBER} \
-                        --outputdir ${RESULTS_DIR} \
+                        --variable BROWSER:headlesschrome \
+                        --outputdir results \
                         --output    output.xml \
                         --log       log.html \
                         --report    report.html \
                         tests/
-                """
+                '''
             }
         }
+
     }
 
     post {
-         always {
+        always {
             script {
-                if (fileExists("${env.RESULTS_DIR}/output.xml")) {
-                    robot outputPath:       "${env.RESULTS_DIR}",
+                if (fileExists('results/output.xml')) {
+                    robot outputPath:       'results',
                           logFileName:      'log.html',
                           reportFileName:   'report.html',
                           outputFileName:   'output.xml',
-                          passThreshold:    90,
+                          passThreshold:     90,
                           unstableThreshold: 80
                 } else {
-                    echo "No output.xml — robot publisher skipped"
+                    echo 'No output.xml found — robot publisher skipped'
                 }
             }
-            archiveArtifacts artifacts: "${RESULTS_DIR}/**/*",
+            archiveArtifacts artifacts: 'results/**/*',
                              allowEmptyArchive: true
         }
-        success { echo "Build passed!" }
-        failure { echo "Tests failed — check Robot report" }
+        success { echo 'All tests passed!' }
+        failure { echo 'Tests failed — check the Robot report link above' }
     }
 }
