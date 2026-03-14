@@ -1,6 +1,6 @@
 *** Settings ***
-Resource    keywords/pages/LoginPageKeyword.robot
-Resource    keywords/pages/HomePageKeyword.robot
+Resource    ../keywords/pages/LoginPageKeyword.robot
+Resource    ../keywords/pages/HomePageKeyword.robot
 Test Teardown    Close Browser
 
 *** Variables ***
