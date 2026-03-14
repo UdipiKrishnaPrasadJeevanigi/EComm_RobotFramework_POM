@@ -50,8 +50,8 @@ pipeline {
     post {
          always {
             script {
-                if (fileExists("${RESULTS_DIR}/output.xml")) {
-                    robot outputPath:       "${RESULTS_DIR}",
+                if (fileExists("${env.RESULTS_DIR}/output.xml")) {
+                    robot outputPath:       "${env.RESULTS_DIR}",
                           logFileName:      'log.html',
                           reportFileName:   'report.html',
                           outputFileName:   'output.xml',
