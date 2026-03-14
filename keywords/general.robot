@@ -46,10 +46,10 @@ ${PASSWORD_INVALID}     Password1
 Launch Browser
     [Documentation]    Launch browser with specified popup behavior
     ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
-    Call Method    ${options}    add_argument    --headless=new
-    Call Method    ${options}    add_argument    --no-sandbox
-    Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Call Method    ${options}    add_argument    --disable-gpu
+    Call Method    ${chrome_options}    add_argument    --headless=new
+    Call Method    ${chrome_options}    add_argument    --no-sandbox
+    Call Method    ${chrome_options}    add_argument    --disable-dev-shm-usage
+    Call Method    ${chrome_options}    add_argument    --disable-gpu
     Open Browser    ${PAGE_URL}    ${BROWSER}    options=${chrome_options}
 
 Read Excel Values
