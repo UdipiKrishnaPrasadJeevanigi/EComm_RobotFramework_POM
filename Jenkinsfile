@@ -20,24 +20,51 @@ pipeline {
 
         stage('Run Robot Framework Tests') {
             steps {
-                sh '''
-                    mkdir -p results
-                    robot --outputdir results tests/
-                '''
+                sh """
+                    # Kill any stale Chrome from previous builds
+                    pkill -f chrome      || true
+                    pkill -f chromedriver || true
+
+                    # Delete Chrome singleton lock files (root cause of the error)
+                    find /tmp -name 'SingletonLock'   -delete 2>/dev/null || true
+                    find /tmp -name 'SingletonSocket' -delete 2>/dev/null || true
+                    find /tmp -name 'SingletonCookie' -delete 2>/dev/null || true
+                    rm -rf /tmp/.com.google.Chrome.* || true
+                    rm -rf /tmp/chrome-* || true
+
+                    mkdir -p ${RESULTS_DIR}
+                    robot \
+                        --variable HOME_URL:${HOME_URL} \
+                        --variable BROWSER:${BROWSER} \
+                        --variable BUILD_NUMBER:${BUILD_NUMBER} \
+                        --outputdir ${RESULTS_DIR} \
+                        --output    output.xml \
+                        --log       log.html \
+                        --report    report.html \
+                        tests/
+                """
             }
         }
     }
 
     post {
-        always {
-            // Archive test results
-            archiveArtifacts artifacts: 'results/**/*', allowEmptyArchive: true
-
-            // Publish Robot Framework results
-            robot outputPath: 'results',
-                  logFileName: 'log.html',
-                  reportFileName: 'report.html',
-                  outputFileName: 'output.xml'
+         always {
+            script {
+                if (fileExists("${RESULTS_DIR}/output.xml")) {
+                    robot outputPath:       "${RESULTS_DIR}",
+                          logFileName:      'log.html',
+                          reportFileName:   'report.html',
+                          outputFileName:   'output.xml',
+                          passThreshold:    90,
+                          unstableThreshold: 80
+                } else {
+                    echo "No output.xml — robot publisher skipped"
+                }
+            }
+            archiveArtifacts artifacts: "${RESULTS_DIR}/**/*",
+                             allowEmptyArchive: true
         }
+        success { echo "Build passed!" }
+        failure { echo "Tests failed — check Robot report" }
     }
 }
