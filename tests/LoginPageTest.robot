@@ -16,7 +16,7 @@ TC_01_LoginPage_Tecskool_store
     Then User Validate Successful Login    ${USERNAME}
     Then User Logout From The Application
     
-TC_02_LoginPage_Tecskool_store
+TC_02_LoginPage_Invalid_Credentials
     [Documentation]    Login Functionality Validation Using Wrong Credentials
     [Tags]    TC_LoginPage_REG    TC_LoginPage_E2E    TC_LoginPage_02
     Given User Navigate To Store And Validate Fields   ${HOME_URL}

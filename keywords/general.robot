@@ -32,8 +32,10 @@ ${SPAN_CONTAINS_CLASS}  //span[contains(@class , "replace")]
 ${A_TEXT}            //a[text() = "replace"]
 ${A_CONTAINS_HREF}    //a[contains(@href , "replace")]
 ${A_HREF}         //a[@href = "replace"]
+${BUTTON_DATATEST_ID}    //button[@data-testid = "replace"]
 ${A_DATATEST_ID}    //a[@data-testid = "replace"]
 ${DIV_DATATEST_ID}    //div[@data-testid = "replace"]
+${H3_DATATEST_ID}    //h3[@data-testid = "replace"]
 
 ${HOME_URL}        https://testcart.tecskool.com/
 ${USERNAME}    Demo User
@@ -50,7 +52,7 @@ Launch Browser
     ${no_sandbox}=        Set Variable    --no-sandbox
     ${shm}=               Set Variable    --disable-dev-shm-usage
     ${gpu}=               Set Variable    --disable-gpu
-    Call Method    ${chrome_options}    add_argument    ${headless}
+    # Call Method    ${chrome_options}    add_argument    ${headless}
     Call Method    ${chrome_options}    add_argument    ${no_sandbox}
     Call Method    ${chrome_options}    add_argument    ${shm}
     Call Method    ${chrome_options}    add_argument    ${gpu}
@@ -87,7 +89,7 @@ Replace Xpath And Click
     ${STR}    Replace String  ${XPATH}  replace  ${NAME}
     Wait Until Element Is Visible    ${STR}     ${TIMEOUT_10S}
     ${RES}     run keyword and return status    Click Element    ${STR}
-    IF    '${RES}'==False
+    IF    '${RES}'== 'False'
         Click Element Using Javascript  ${STR}
     END
 
@@ -109,6 +111,14 @@ Replace Xpath And Input Text
     ${STR}    Replace String  ${XPATH}  replace  ${NAME}
     Wait Until Page Contains Element    ${STR}
     Input Text     ${STR}    ${VAL}
+    
+Replace Xpath And Scroll To Element
+    [Documentation]    Generic Keyword to Scroll To Element
+    [Arguments]    ${XPATH}  ${NAME}
+    ${STR}    Replace String  ${XPATH}  replace  ${NAME}
+    Wait Until Page Contains Element    ${STR}
+    ${element}=     Get WebElement    xpath:${STR}
+    Execute Javascript    arguments[0].scrollIntoView(true);     ARGUMENTS        ${element}
 
 Navigate To Application
     [Documentation]    Keyword to Navigate to certain App through app url

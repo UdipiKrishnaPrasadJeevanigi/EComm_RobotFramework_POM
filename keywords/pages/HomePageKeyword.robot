@@ -43,6 +43,7 @@ User Validate Global Search Functionality
      Wait Until Keyword Succeeds    40 sec  2 sec     Replace Xpath And Wait  ${INPUT_DATATEST_ID}    ${SEARCH_INPUT}
      Replace Xpath And Input Text    ${INPUT_DATATEST_ID}    ${SEARCH_INPUT}    ${INPUT_VAL}
      User Get Product Count For Global Search Input
+     Replace Xpath And Scroll To Element     ${H3_DATA_TEST_ID}    ${PRODUCT_NAME}
      Capture Page Screenshot
 
 User Get Product Count For Global Search Input

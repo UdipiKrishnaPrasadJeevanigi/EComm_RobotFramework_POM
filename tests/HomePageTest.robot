@@ -24,3 +24,4 @@ TC_02_TecSkool_HomePage
     When User Navigate To Login Page And Validate Fields  ${EMAIL_ID}    ${PASSWORD}
     Then User Validate Successful Login    ${USERNAME}
     Then User Validate Global Search Functionality    ${TD_DICT['PRODUCT_NAME'][0]}
+
