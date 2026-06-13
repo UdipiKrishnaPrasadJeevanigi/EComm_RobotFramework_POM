@@ -1,5 +1,6 @@
 *** Settings ***
 Resource    ../keywords/pages/CheckoutPageKeyword.robot
+Suite Setup     Load Config
 Suite Teardown    Close Browser
 
 *** Variables ***

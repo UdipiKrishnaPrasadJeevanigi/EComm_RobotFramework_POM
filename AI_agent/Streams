@@ -1,0 +1,27 @@
+from xmlrpc import client
+
+from ollama import chat
+
+messages_list = []
+def add_message(messages, role, text):
+    messages.append({
+        "role": role,
+        "content": text,
+    })
+
+def add_assistant_message(messages, text):
+    add_message(messages, "assistant", text)
+
+add_message(messages_list, "user", "Write a python code for printing power of 2*2")
+add_assistant_message(messages_list, "```python")
+stream =chat(
+    model = "gemma4:e2b",
+    messages = messages_list,
+    stream = True,
+    options = {
+        "stop_sequences": ["```"]
+    }
+)
+for text in stream:
+     print(text['message']['content'], end="")
+

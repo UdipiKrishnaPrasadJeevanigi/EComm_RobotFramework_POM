@@ -1,6 +1,6 @@
 *** Settings ***
 Resource    ../keywords/pages/HomePageKeyword.robot
-
+Suite Setup     Load Config
 
 *** Variables ***
 
@@ -15,6 +15,7 @@ TC_01_TecSkool_HomePage
     Then User Validate Successful Login    ${USERNAME}
     Then User Validate Section Links
     Then User Validate Price Filter    ${TD_DICT['ELECTRONICS_SECTION'][0]}    30     50
+    Then User Logout From The Application
 
 TC_02_TecSkool_HomePage
     [Documentation]    1. Validate Global Search Input Functionality From Home Page
@@ -24,4 +25,4 @@ TC_02_TecSkool_HomePage
     When User Navigate To Login Page And Validate Fields  ${EMAIL_ID}    ${PASSWORD}
     Then User Validate Successful Login    ${USERNAME}
     Then User Validate Global Search Functionality    ${TD_DICT['PRODUCT_NAME'][0]}
-
+    Then User Logout From The Application

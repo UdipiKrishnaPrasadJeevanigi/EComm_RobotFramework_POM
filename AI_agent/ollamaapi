@@ -1,0 +1,12 @@
+import requests
+
+response = requests.post(
+    "http://localhost:11434/api/generate",
+    json={
+        "model": "qwen3:4b",
+        "prompt": "write a python code for printing power of 2*2",
+        "stream": False
+    }
+)
+
+print(response.json())

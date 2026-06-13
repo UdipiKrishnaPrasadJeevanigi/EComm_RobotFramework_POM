@@ -4,3 +4,11 @@
 *.iml
 *.pyc
 /screenshots
+.RFvenv/
+results/
+__pycache__/
+.idea/
+.vscode/
+log.html
+report.html
+output.xml

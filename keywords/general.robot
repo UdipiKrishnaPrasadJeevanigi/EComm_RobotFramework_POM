@@ -4,6 +4,7 @@ Library    SeleniumLibrary
 Library    String
 Library    Collections
 Library    ../Library/excel_operations.py
+Library    ../Library/yaml_operations.py
 Resource    ../keywords/pages/CartPageKeyword.robot
 Variables        ../data/general_data.py
 
@@ -37,7 +38,7 @@ ${A_DATATEST_ID}    //a[@data-testid = "replace"]
 ${DIV_DATATEST_ID}    //div[@data-testid = "replace"]
 ${H3_DATATEST_ID}    //h3[@data-testid = "replace"]
 
-${HOME_URL}        https://testcart.tecskool.com/
+${HOME_URL}=  Get Config      qa    url 
 ${USERNAME}    Demo User
 ${EMAIL_ID}     demo@tecskool.com
 ${EMAIL_ID_INVALID}    demo2@tecskool.com
@@ -45,6 +46,11 @@ ${PASSWORD}        Password123
 ${PASSWORD_INVALID}     Password1
 
 *** Keywords ***
+Load Config 
+    [Documentation]  Loads the config file values
+    ${HOME_URL}=  Get Config      qa    url 
+    Set Global Variable    ${HOME_URL}
+
 Launch Browser
     [Documentation]    Launch browser with specified popup behavior
     ${chrome_options}=    Evaluate    selenium.webdriver.ChromeOptions()    modules=selenium.webdriver

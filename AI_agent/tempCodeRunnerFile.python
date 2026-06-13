@@ -1,0 +1,7 @@
+with client.messages.stream(
+    model = "gemma4:e2b",
+    messages = messages_list,
+) as stream:
+    for response in stream:
+        print("Gemini:", response.message.content
+)
